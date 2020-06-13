@@ -35,13 +35,12 @@ public class GameManager : MonoBehaviour
         await speechOut.Speak("Welcome to Quake Panto Edition");
 
         Level level = GetComponent<Level>();
-        await level.playIntroductionHandlesLocked();
+        await level.playIntroduction();
         await speechOut.Speak("Introduction finished, game starts.");
 
         await ResetPositions();
 
-        upperHandle.Free();
-        lowerHandle.Free();
+        await upperHandle.SwitchTo(enemy, 1);
 
         player.SetActive(true);
         enemy.SetActive(true);
