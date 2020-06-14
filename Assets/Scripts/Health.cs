@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class DefeatEvent : UnityEvent<GameObject> { }
@@ -7,20 +8,35 @@ public class DefeatEvent : UnityEvent<GameObject> { }
 
 public class Health : MonoBehaviour
 {
-    public int health = 100;
+    [HideInInspector]
+    public int healthPoints = 100;
+    public Slider healthSlider;
+    public Image sliderImage;
+    public Color fullHealthColor = Color.green;
+    public Color zeroHealthColor = Color.red;
     public int maxHealth = 100;
     public DefeatEvent notifyDefeat;
 
+    void Start()
+    {
+        healthSlider.minValue = 0;
+        healthSlider.maxValue = maxHealth;
+        UpdateUI();
+    }
+
     void OnEnable()
     {
-        health = maxHealth;
+        healthPoints = maxHealth;
+        UpdateUI();
     }
 
     public void TakeDamage(int amount)
     {
-        health -= amount;
+        healthPoints -= amount;
 
-        if (health <= 0)
+        UpdateUI();
+
+        if (healthPoints <= 0)
         {
             notifyDefeat.Invoke(gameObject);
         }
@@ -28,6 +44,12 @@ public class Health : MonoBehaviour
 
     public void Heal(int amount)
     {
-        health = Mathf.Min(health + amount, maxHealth);
+        healthPoints = Mathf.Min(healthPoints + amount, maxHealth);
+    }
+
+    void UpdateUI()
+    {
+        healthSlider.value = healthPoints;
+        sliderImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, healthPoints / (float)maxHealth);
     }
 }

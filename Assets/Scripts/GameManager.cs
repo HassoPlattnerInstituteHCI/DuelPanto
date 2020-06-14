@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SpeechIO;
 using UnityEngine;
-using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +19,14 @@ public class GameManager : MonoBehaviour
     private SpeechOut speechOut;
     private string[] commands = new string[] { "yes", "no" };
 
+    private bool gameEnded = false;
+
+    public Text playerScoreText;
+    public Text enemyScoreText;
+
+    private int playerScore = 0;
+    private int enemyScore = 0;
+
     void Start()
     {
         speechIn = new SpeechIn(onRecognized, commands);
@@ -26,6 +34,8 @@ public class GameManager : MonoBehaviour
 
         upperHandle = GetComponent<UpperHandle>();
         lowerHandle = GetComponent<LowerHandle>();
+
+        UpdateUI();
 
         Introduction();
     }
@@ -38,22 +48,46 @@ public class GameManager : MonoBehaviour
         await level.playIntroduction();
         await speechOut.Speak("Introduction finished, game starts.");
 
-        await ResetPositions();
+        await ResetGame();
+    }
 
-        await upperHandle.SwitchTo(enemy, 1);
+    async Task ResetGame()
+    {
+        speechIn.StopListening();
+        gameEnded = false;
+
+        await speechOut.Speak("Spawning player");
+        player.transform.position = playerSpawn.position;
+        await upperHandle.SwitchTo(player, 1);
+
+        await speechOut.Speak("Spawning enemy");
+        enemy.transform.position = enemySpawn.position;
+        await lowerHandle.SwitchTo(enemy, 1);
+
+        upperHandle.Free();
 
         player.SetActive(true);
         enemy.SetActive(true);
     }
 
-    async Task ResetPositions()
+    async void Update()
     {
-        await speechOut.Speak("Spawning player");
-        await upperHandle.MoveToPosition(playerSpawn.position, spawnSpeed);
+        if (gameEnded)
+        {
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                await ResetGame();
+            } else if (Input.GetKeyDown(KeyCode.N))
+            {
+                QuitGame();
+            }
+        }
+    }
 
-        await speechOut.Speak("Spawning enemy");
-        await lowerHandle.MoveToPosition(enemySpawn.position, spawnSpeed);
-        enemy.transform.position = enemySpawn.position;
+    void QuitGame()
+    {
+        Debug.Log("Quitting Application...");
+        Application.Quit();
     }
 
     async void onRecognized(string message)
@@ -62,13 +96,10 @@ public class GameManager : MonoBehaviour
         switch (message)
         {
             case "yes":
-                speechIn.StopListening();
-                await ResetPositions();
-                player.SetActive(true);
-                enemy.SetActive(true);
+                await ResetGame();
                 break;
             case "no":
-                Application.Quit();
+                QuitGame();
                 break;
             default:
                 speechIn.StopListening();
@@ -89,9 +120,22 @@ public class GameManager : MonoBehaviour
         player.SetActive(false);
         enemy.SetActive(false);
 
-        string defeatedPerson = defeated.Equals(player) ? "You" : "Enemy";
+        bool playerDefeated = defeated.Equals(player);
+
+        if (playerDefeated)
+        {
+            enemyScore++;
+        } else
+        {
+            playerScore++;
+        }
+        UpdateUI();
+
+        string defeatedPerson = playerDefeated ? "You" : "Enemy";
         await speechOut.Speak($"{defeatedPerson} got defeated.");
         await speechOut.Speak("Continue?");
+
+        gameEnded = true;
 
         speechIn.StartListening();
     }
@@ -99,5 +143,11 @@ public class GameManager : MonoBehaviour
     async Task TellCommands()
     {
         await speechOut.Speak("You can say yes or no.");
+    }
+
+    void UpdateUI()
+    {
+        playerScoreText.text = playerScore.ToString();
+        enemyScoreText.text = enemyScore.ToString();
     }
 }
