@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public Transform playerSpawn;
     public Transform enemySpawn;
-
+    
     private UpperHandle upperHandle;
     private LowerHandle lowerHandle;
     public float spawnSpeed = 1f;
@@ -92,21 +92,7 @@ public class GameManager : MonoBehaviour
 
     async void onRecognized(string message)
     {
-        Debug.Log($"[{GetType().Name}]: {message}");
-        switch (message)
-        {
-            case "yes":
-                await ResetGame();
-                break;
-            case "no":
-                QuitGame();
-                break;
-            default:
-                speechIn.StopListening();
-                await TellCommands();
-                speechIn.StartListening();
-                break;
-        }
+        Debug.Log("SpeechIn recognized: " + message);
     }
 
     public void OnApplicationQuit()
@@ -137,7 +123,11 @@ public class GameManager : MonoBehaviour
 
         gameEnded = true;
 
-        speechIn.StartListening();
+        string response = await speechIn.Listen(commands);
+        if (response == "yes")
+            await ResetGame();
+        if (response == "no")
+            QuitGame();
     }
 
     async Task TellCommands()
