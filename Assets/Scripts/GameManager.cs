@@ -45,10 +45,20 @@ public class GameManager : MonoBehaviour
         await speechOut.Speak("Welcome to Quake Panto Edition");
 
         Level level = GetComponent<Level>();
-        await level.playIntroduction();
+        await level.PlayIntroduction();
         await speechOut.Speak("Introduction finished, game starts.");
 
         await ResetGame();
+        RegisterColliders();
+    }
+
+    void RegisterColliders() {
+        PantoCollider[] colliders = GameObject.FindObjectsOfType<PantoCollider>();
+        foreach (PantoCollider collider in colliders)
+        {
+            collider.CreateObstacle();
+            collider.Enable();
+        }
     }
 
     async Task ResetGame()
@@ -58,11 +68,11 @@ public class GameManager : MonoBehaviour
 
         await speechOut.Speak("Spawning player");
         player.transform.position = playerSpawn.position;
-        await upperHandle.SwitchTo(player, 1);
+        await upperHandle.SwitchTo(player, 0.3f);
 
         await speechOut.Speak("Spawning enemy");
         enemy.transform.position = enemySpawn.position;
-        await lowerHandle.SwitchTo(enemy, 1);
+        await lowerHandle.SwitchTo(enemy, 0.3f);
 
         upperHandle.Free();
 

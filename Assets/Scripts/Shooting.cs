@@ -62,7 +62,7 @@ public class Shooting : MonoBehaviour
         RaycastHit hit;
 
         if (isUpper)
-            transform.rotation = Quaternion.Euler(0, handle.getRotation(), 0);
+            transform.rotation = Quaternion.Euler(0, handle.GetRotation(), 0);
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, maxRayDistance, hitLayers))
         {
