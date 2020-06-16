@@ -45,11 +45,12 @@ public class GameManager : MonoBehaviour
         await speechOut.Speak("Welcome to Quake Panto Edition");
 
         Level level = GetComponent<Level>();
-        await level.PlayIntroduction();
+        //await level.PlayIntroduction();
         await speechOut.Speak("Introduction finished, game starts.");
 
         await ResetGame();
-        RegisterColliders();
+        if (!GetComponent<DualPantoSync>().debug)
+            RegisterColliders();
     }
 
     void RegisterColliders() {
