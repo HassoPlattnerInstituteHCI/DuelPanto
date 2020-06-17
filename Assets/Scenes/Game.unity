@@ -241,6 +241,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panto
       objectReference: {fileID: 0}
+    - target: {fileID: 826605487606422809, guid: f08d327e9fb42f94d97ba9d1d226d418,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 826605487606422813, guid: f08d327e9fb42f94d97ba9d1d226d418,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -786,7 +791,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 14, y: 15, z: -16, w: 13}
+  m_BoundingSphereOverride: {x: 4.5755e-41, y: 9.784429e-35, z: 1e-45, w: 9.784503e-35}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1841,11 +1846,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8684daf065224d688575e0262e620d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnSpeed: 1
+  introduceLevel: 1
   player: {fileID: 881415689}
   enemy: {fileID: 1819973866}
   playerSpawn: {fileID: 743777051}
   enemySpawn: {fileID: 1012411828}
-  spawnSpeed: 1
   playerScoreText: {fileID: 1215762631}
   enemyScoreText: {fileID: 252279033}
 --- !u!1 &1215762629
@@ -2369,12 +2375,12 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1280
-  CSGoPlayer: 0
-  returnsFireOnAttack: 1
   aimbotDistance: 10
   seekingDistance: 1
   timeTillSeek: 5
   inaccuracy: 0.2
+  CSGoPlayer: 0
+  returnsFireOnAttack: 1
 --- !u!195 &1819973875
 NavMeshAgent:
   m_ObjectHideFlags: 0
