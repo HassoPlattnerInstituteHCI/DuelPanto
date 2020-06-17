@@ -2,59 +2,94 @@
 using SpeechIO;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+    public float spawnSpeed = 1f;
+    public bool introduceLevel = true;
     public GameObject player;
     public GameObject enemy;
-
     public Transform playerSpawn;
     public Transform enemySpawn;
-    
-    private UpperHandle upperHandle;
-    private LowerHandle lowerHandle;
-    public float spawnSpeed = 1f;
-
-    private SpeechIn speechIn;
-    private SpeechOut speechOut;
-    private string[] commands = new string[] { "yes", "no" };
-
-    private bool gameEnded = false;
-
     public Text playerScoreText;
     public Text enemyScoreText;
 
-    private int playerScore = 0;
-    private int enemyScore = 0;
+    UpperHandle upperHandle;
+    LowerHandle lowerHandle;
+    SpeechIn speechIn;
+    SpeechOut speechOut;
+    bool gameEnded = false;
+    int playerScore = 0;
+    int enemyScore = 0;
+    Dictionary<string, KeyCode> commands = new Dictionary<string, KeyCode>() {
+        { "yes", KeyCode.Y },
+        { "no", KeyCode.N },
+        { "done", KeyCode.Y }
+    };
 
     void Start()
     {
-        speechIn = new SpeechIn(onRecognized, commands);
+        speechIn = new SpeechIn(onRecognized, commands.Keys.ToArray());
         speechOut = new SpeechOut();
 
         upperHandle = GetComponent<UpperHandle>();
         lowerHandle = GetComponent<LowerHandle>();
+
+        if (!GetComponent<DualPantoSync>().debug)
+            RegisterColliders();
 
         UpdateUI();
 
         Introduction();
     }
 
+    // TODO: Check for forces at start
     async void Introduction()
     {
         await speechOut.Speak("Welcome to Quake Panto Edition");
 
-        Level level = GetComponent<Level>();
-        //await level.PlayIntroduction();
+        if (introduceLevel)
+        {
+            await IntroduceLevel();
+        }
+
         await speechOut.Speak("Introduction finished, game starts.");
 
         await ResetGame();
-        if (!GetComponent<DualPantoSync>().debug)
-            RegisterColliders();
+    }
+
+    async Task IntroduceLevel()
+    {
+        Level level = GetComponent<Level>();
+        await level.PlayIntroduction();
+
+        await speechOut.Speak("Do you want to explore the room?");
+        string response = await speechIn.Listen(commands);
+
+        if (response == "yes")
+        {
+            await RoomExploration();
+        }
+    }
+
+    async Task RoomExploration()
+    {
+        while (true)
+        {
+            await speechOut.Speak("Say done when you're ready.");
+            string response = await speechIn.Listen(commands);
+            if (response == "done")
+            {
+                speechIn.StopListening();
+                return;
+            }
+        }
     }
 
     void RegisterColliders() {
-        PantoCollider[] colliders = GameObject.FindObjectsOfType<PantoCollider>();
+        PantoCollider[] colliders = FindObjectsOfType<PantoCollider>();
         foreach (PantoCollider collider in colliders)
         {
             collider.CreateObstacle();
@@ -98,6 +133,7 @@ public class GameManager : MonoBehaviour
     void QuitGame()
     {
         Debug.Log("Quitting Application...");
+        speechIn.StopListening();
         Application.Quit();
     }
 
@@ -127,6 +163,8 @@ public class GameManager : MonoBehaviour
             playerScore++;
         }
         UpdateUI();
+
+        // TODO: Increase enemy difficulty
 
         string defeatedPerson = playerDefeated ? "You" : "Enemy";
         await speechOut.Speak($"{defeatedPerson} got defeated.");

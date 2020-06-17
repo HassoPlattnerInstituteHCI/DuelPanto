@@ -6,15 +6,15 @@ public class PlayerLogic : MonoBehaviour
 {
     private PantoHandle upperHandle;
 
-    private AudioSource audioSource;
+    AudioSource audioSource;
     public AudioClip heartbeatClip;
 
     public int startBPM = 60;
     public int endBPM = 220;
-    private float bpmCoefficient;
+    float bpmCoefficient;
     public float bps = 1;
-    private float nextHeartbeat;
-    private Health health;
+    float nextHeartbeat;
+    Health health;
 
     void Start()
     {

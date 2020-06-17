@@ -5,6 +5,8 @@ using UnityEngine.UI;
 [System.Serializable]
 public class DefeatEvent : UnityEvent<GameObject> { }
 
+[System.Serializable]
+public class DamageEvent : UnityEvent<GameObject> { }
 
 public class Health : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class Health : MonoBehaviour
     public Color zeroHealthColor = Color.red;
     public int maxHealth = 100;
     public DefeatEvent notifyDefeat;
+    public DamageEvent notifyDamage;
 
     void Start()
     {
@@ -30,7 +33,7 @@ public class Health : MonoBehaviour
         UpdateUI();
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, GameObject from)
     {
         healthPoints -= amount;
 
@@ -39,6 +42,9 @@ public class Health : MonoBehaviour
         if (healthPoints <= 0)
         {
             notifyDefeat.Invoke(gameObject);
+        } else
+        {
+            notifyDamage.Invoke(from);
         }
     }
 

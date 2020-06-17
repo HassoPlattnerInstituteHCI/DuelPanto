@@ -6,13 +6,14 @@ public class Shooting : MonoBehaviour
     public LayerMask hitLayers;
     public int damage = 2;
     public bool isUpper = true;
-
     public AudioClip defaultClip;
     public AudioClip wallClip;
     public AudioClip hitClip;
 
-    private AudioSource audioSource;
-    private AudioClip _currentClip;
+    AudioSource audioSource;
+    AudioClip _currentClip;
+    LineRenderer lineRenderer;
+    PantoHandle handle;
 
     AudioClip currentClip
     {
@@ -29,9 +30,6 @@ public class Shooting : MonoBehaviour
             }
         }
     }
-
-    private LineRenderer lineRenderer;
-    private PantoHandle handle;
 
     void Start()
     {
@@ -71,7 +69,8 @@ public class Shooting : MonoBehaviour
             Health enemy = hit.transform.GetComponent<Health>();
 
             if (enemy) {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(damage, gameObject);
+
                 currentClip = hitClip;
             } else
             {
