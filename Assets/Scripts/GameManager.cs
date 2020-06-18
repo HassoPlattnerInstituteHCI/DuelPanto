@@ -5,6 +5,15 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
+/* TODO: Rather than calling it quake (which is a huge AAA title that we cannot 
+ * approximate; also a trademark, I am suspecting), let's give this its own name: 
+ * maybe a pun on dualPanto... dunno dualPanting (to pant = heavy breathing...)... 
+ * not really... how about duelPanto (duel = a contest with deadly weapons arranged 
+ * between two people in order to settle a point of honor)? Downside is that, when 
+ * merely spoken, no one will even get the pun (I checked and they pronounce exactly the same). 
+ * Maybe you have better ideas? Can anyone suggest a few names? 
+ */
+
 public class GameManager : MonoBehaviour
 {
     public float spawnSpeed = 1f;
@@ -50,9 +59,6 @@ public class GameManager : MonoBehaviour
         upperHandle = GetComponent<UpperHandle>();
         lowerHandle = GetComponent<LowerHandle>();
 
-        if (!GetComponent<DualPantoSync>().debug)
-            RegisterColliders();
-
         UpdateUI();
 
         Introduction();
@@ -61,6 +67,9 @@ public class GameManager : MonoBehaviour
     async void Introduction()
     {
         await speechOut.Speak("Welcome to Quake Panto Edition");
+        // TODO: 1. Introduce obstacles in level 2 (aka 1)
+        await Task.Delay(1000);
+        RegisterColliders();
 
         if (introduceLevel)
         {
@@ -74,9 +83,13 @@ public class GameManager : MonoBehaviour
 
     async Task IntroduceLevel()
     {
+        await speechOut.Speak("There are two obstacles.");
         Level level = GetComponent<Level>();
         await level.PlayIntroduction();
 
+        // TODO: 2. Explain enemy and player with weapons by wiggling and playing shooting sound
+
+        // TODO: 3. Don't ask for a tour, just do it
         await speechOut.Speak("Do you want to explore the room?");
         string response = await speechIn.Listen(commands);
 
@@ -94,16 +107,16 @@ public class GameManager : MonoBehaviour
             string response = await speechIn.Listen(commands);
             if (response == "done")
             {
-                speechIn.StopListening();
                 return;
             }
         }
     }
 
     void RegisterColliders() {
-        PantoCollider[] colliders = FindObjectsOfType<PantoCollider>();
+        PantoCollider[] colliders = GameObject.FindObjectsOfType<PantoCollider>();
         foreach (PantoCollider collider in colliders)
         {
+            Debug.Log(collider);
             collider.CreateObstacle();
             collider.Enable();
         }
@@ -111,8 +124,6 @@ public class GameManager : MonoBehaviour
 
     async Task ResetGame()
     {
-        speechIn.StopListening();
-
         await speechOut.Speak("Spawning player");
         player.transform.position = playerSpawn.position;
         await upperHandle.SwitchTo(player, 0.3f);
@@ -135,7 +146,6 @@ public class GameManager : MonoBehaviour
     void QuitGame()
     {
         Debug.Log("Quitting Application...");
-        speechIn.StopListening();
         Application.Quit();
     }
 
@@ -205,7 +215,7 @@ public class GameManager : MonoBehaviour
 
     async Task GameOver()
     {
-        await speechOut.Speak("Game over.");
+        await speechOut.Speak("Congratulations.");
         await speechOut.Speak($"You achieved a score of {gameScore}");
         // TODO: Estimate a good trophy score
         if (gameScore >= trophyScore)

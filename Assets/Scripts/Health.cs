@@ -10,7 +10,8 @@ public class DamageEvent : UnityEvent<GameObject> { }
 
 public class Health : MonoBehaviour
 {
-    //[HideInInspector]
+    // TODO: 5. Make the levels way longer. Just give players 4x more health.
+    [HideInInspector]
     public int healthPoints = 100;
     public Slider healthSlider;
     public Image sliderImage;

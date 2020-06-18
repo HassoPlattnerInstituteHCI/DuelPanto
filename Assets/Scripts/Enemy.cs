@@ -46,6 +46,13 @@ public class Enemy : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, config.turnSpeed);
     }
 
+    /* TODO: 9. If you get bored: watching Thijs and Jotaro, the game seems to "stall" 
+     * in that both players aim at each other and keep shooting. On the higher levels, 
+     * rather that making the computer player shoot better, let the computer enemy run better, 
+     * move sideways while shooting (strafing: https://doom.fandom.com/wiki/Strafing). 
+     * If you get carried away, let the enemy hide behind the obstacles. 
+     * This will make the game more interesting.
+     */
     void SeekMode()
     {
         Vector3 playerDirection = target.position - transform.position;
