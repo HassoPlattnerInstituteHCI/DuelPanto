@@ -27,7 +27,7 @@ public class PlayerLogic : MonoBehaviour
 
     void Update()
     {
-        transform.position = upperHandle.GetPosition();
+        transform.position = upperHandle.HandlePosition(transform.position);
 
         if (health.healthPoints > 0 && health.healthPoints <= 2 * health.maxHealth / 3)
         {

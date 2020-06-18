@@ -4,15 +4,10 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public Transform target;
-    public float turnSpeed = 7f;
-    public float fieldOfView = 30;
     public LayerMask layerMask;
     public float aimbotDistance = 10f;
     public float seekingDistance = 1f;
-    public float timeTillSeek = 2f;
-    public float inaccuracy = 0.2f;
-    public bool CSGoPlayer = false;
-    public bool returnsFireOnAttack = true;
+    public EnemyConfig config;
 
     bool foundPlayer = false;
     float timeToFind;
@@ -22,14 +17,22 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        lastSeenPosition = target.position;
-        foundPlayer = true;
-        agent.stoppingDistance = CSGoPlayer ? aimbotDistance : seekingDistance;
+        agent.stoppingDistance = config.CSGoPlayer ? aimbotDistance : seekingDistance;
+    }
+
+    void OnEnable()
+    {
+        if (config.attackPlayerAtStart)
+        {
+            lastSeenPosition = target.position;
+            foundPlayer = true;
+        }
+        GetComponent<Health>().maxHealth = config.health;
     }
 
     void Update()
     {
-        if (CSGoPlayer)
+        if (config.CSGoPlayer)
         {
             AimbotMode();
         }
@@ -40,23 +43,22 @@ public class Enemy : MonoBehaviour
 
         agent.SetDestination(lastSeenPosition);
         Quaternion lookRotation = Quaternion.LookRotation(lastSeenPosition - transform.position, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, turnSpeed);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, config.turnSpeed);
     }
 
     void SeekMode()
     {
         Vector3 playerDirection = target.position - transform.position;
-        Quaternion rotationToPlayer = Quaternion.LookRotation(playerDirection, Vector3.up);
-        float rotationDifference = rotationToPlayer.eulerAngles.y - transform.rotation.eulerAngles.y;
+        float rotationDifference = Vector3.Angle(transform.forward, playerDirection);
 
-        if (Mathf.Abs(rotationDifference) <= fieldOfView)
+        if (Mathf.Abs(rotationDifference) <= config.fieldOfView)
         {
             if (Physics.Raycast(transform.position, playerDirection, out RaycastHit hit, playerDirection.magnitude, layerMask))
             {
                 if (foundPlayer = hit.transform.Equals(target))
                 {
                     lastSeenPosition = hit.transform.position;
-                    transform.Rotate(0, Random.Range(-inaccuracy, inaccuracy), 0);
+                    transform.Rotate(0, Random.Range(-config.inaccuracy, config.inaccuracy), 0);
                 }
             }
         } else
@@ -64,12 +66,12 @@ public class Enemy : MonoBehaviour
             foundPlayer = false;
         }
 
-        if (!foundPlayer && timeToFind >= timeTillSeek)
+        if (!foundPlayer && timeToFind >= config.timeTillSeek)
         {
-            Vector3 randomDirection = Random.insideUnitSphere * 10f;
+            Vector3 randomDirection = Random.insideUnitSphere * config.randomStepSpeed;
             randomDirection += transform.position;
             NavMeshHit hit;
-            NavMesh.SamplePosition(randomDirection, out hit, 10f, 1);
+            NavMesh.SamplePosition(randomDirection, out hit, config.randomStepSpeed, 1);
             lastSeenPosition = hit.position;
 
             timeToFind = 0;
@@ -87,7 +89,7 @@ public class Enemy : MonoBehaviour
 
     public void GotShot(GameObject from)
     {
-        if (!returnsFireOnAttack) return;
+        if (!config.returnsFireOnAttack) return;
         foundPlayer = true;
         lastSeenPosition = from.transform.position;
     }

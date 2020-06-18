@@ -10,7 +10,7 @@ public class DamageEvent : UnityEvent<GameObject> { }
 
 public class Health : MonoBehaviour
 {
-    [HideInInspector]
+    //[HideInInspector]
     public int healthPoints = 100;
     public Slider healthSlider;
     public Image sliderImage;
@@ -20,15 +20,10 @@ public class Health : MonoBehaviour
     public DefeatEvent notifyDefeat;
     public DamageEvent notifyDamage;
 
-    void Start()
+    void OnEnable()
     {
         healthSlider.minValue = 0;
         healthSlider.maxValue = maxHealth;
-        UpdateUI();
-    }
-
-    void OnEnable()
-    {
         healthPoints = maxHealth;
         UpdateUI();
     }

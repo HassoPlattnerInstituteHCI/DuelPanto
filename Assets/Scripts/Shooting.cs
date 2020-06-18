@@ -10,6 +10,9 @@ public class Shooting : MonoBehaviour
     public AudioClip wallClip;
     public AudioClip hitClip;
 
+    public float fireSpreadAngle = 2f;
+    public Transform enemyTransform;
+
     AudioSource audioSource;
     AudioClip _currentClip;
     LineRenderer lineRenderer;
@@ -50,13 +53,50 @@ public class Shooting : MonoBehaviour
 
     void Update()
     {
-        Fire();
+        //Fire();
+        FireCone();
+    }
+
+    void FireCone()
+    {
+        RaycastHit hit;
+
+        if (isUpper)
+            transform.rotation = Quaternion.Euler(0, handle.GetRotation(), 0);
+
+        Vector3 playerDirection = enemyTransform.position - transform.position;
+        float rotationDifference = Vector3.Angle(transform.forward, playerDirection);
+
+        if (Mathf.Abs(rotationDifference) <= fireSpreadAngle)
+        {
+            if (Physics.Raycast(transform.position, playerDirection, out hit, maxRayDistance, hitLayers))
+            {
+                lineRenderer.SetPositions(new Vector3[] { transform.position, hit.point });
+
+                Health enemy = hit.transform.GetComponent<Health>();
+
+                if (enemy)
+                {
+                    enemy.TakeDamage(damage, gameObject);
+
+                    currentClip = hitClip;
+                }
+                else
+                {
+                    currentClip = wallClip;
+                }
+            }
+        }
+        else
+        {
+            lineRenderer.SetPositions(new Vector3[] { transform.position,
+                transform.position + transform.forward * maxRayDistance });
+            currentClip = defaultClip;
+        }
     }
 
     void Fire()
     {
-        lineRenderer.enabled = true;
-
         RaycastHit hit;
 
         if (isUpper)
