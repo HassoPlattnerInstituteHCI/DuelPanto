@@ -986,9 +986,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -0.000015258789, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &331736224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1464,7 +1464,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 4.5e-44, y: 0, z: 9.1835e-41, w: 1.478552e-38}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2347,7 +2347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &956210012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2447,7 +2447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7948ea43f9f03c647aa1ec214c4fbde9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traceShape: 1
+  traceShape: 0
   isOnUpper: 0
   description: And there.
   priority: 0
@@ -2568,7 +2568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &967998316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2668,7 +2668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7948ea43f9f03c647aa1ec214c4fbde9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traceShape: 1
+  traceShape: 0
   isOnUpper: 0
   description: Here.
   priority: 1
@@ -2798,7 +2798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnSpeed: 1
-  introduceLevel: 1
+  introduceLevel: 0
   player: {fileID: 881415689}
   enemy: {fileID: 1819973866}
   enemyConfigs:
@@ -3047,10 +3047,10 @@ RectTransform:
   m_Father: {fileID: 804067106}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -195, y: -0.000049591}
-  m_SizeDelta: {x: 390, y: 316.15}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1735092550
 MonoBehaviour:
@@ -3067,7 +3067,7 @@ MonoBehaviour:
   m_Content: {fileID: 2025684968}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 0
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -3428,12 +3428,12 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 1280
-  damage: 1
+  damage: 3
   isUpper: 0
   defaultClip: {fileID: 8300000, guid: 83c25aafb0a4d4598bc455810a48cd96, type: 3}
   wallClip: {fileID: 8300000, guid: a492fe44c169248c888b6b7179b84f14, type: 3}
   hitClip: {fileID: 8300000, guid: 2e99873b97e7a446a9befe2766fb45b4, type: 3}
-  fireSpreadAngle: 1
+  fireSpreadAngle: 3
   enemyTransform: {fileID: 881415694}
 --- !u!120 &1819973873
 LineRenderer:
@@ -3548,7 +3548,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1280
   aimbotDistance: 10
-  seekingDistance: 1
+  seekingDistance: 3
   config: {fileID: 11400000, guid: 250866c4286eb423a8b4403c91105727, type: 2}
 --- !u!195 &1819973875
 NavMeshAgent:
@@ -3737,11 +3737,11 @@ RectTransform:
   m_Father: {fileID: 331736223}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
-  m_Pivot: {x: 0, y: 1}
+  m_SizeDelta: {x: 300, y: 0}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &2025684969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3802,10 +3802,10 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &2108219063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3848,9 +3848,9 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1769380718}
   m_HandleRect: {fileID: 1769380717}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
-  m_NumberOfSteps: 0
+  m_NumberOfSteps: 4
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
         leaderBoard = dreamloLeaderBoard.GetSceneDreamloLeaderboard();
 
         leaderBoard.GetScores();
+
         await ShowHighscores(10000);
     }
 
@@ -72,6 +73,7 @@ public class UIManager : MonoBehaviour
             Debug.LogError($"The entered name {name} is null or empty.");
         }
 
+        leaderBoard.highScores = "";
         leaderBoard.AddScore(enteredName, gameScore, totalTime);
 
         await ShowHighscores(10000);
@@ -85,15 +87,15 @@ public class UIManager : MonoBehaviour
 
     async Task ShowHighscores(int timeout)
     {
-        foreach (Transform child in contentParent)
-        {
-            child.parent = null;
-            Destroy(child.gameObject);
-        }
         var task = GetHighscores();
         if (await Task.WhenAny(task, Task.Delay(timeout)) == task)
         {
             List<dreamloLeaderBoard.Score> highscores = await task;
+            foreach (Transform child in contentParent)
+            {
+                child.parent = null;
+                Destroy(child.gameObject);
+            }
             foreach (dreamloLeaderBoard.Score score in highscores)
             {
                 GameObject highscoreEntry = Instantiate(highscoreEntryPrefab, contentParent);

@@ -65,17 +65,16 @@ public class Shooting : MonoBehaviour
         if (isUpper)
             transform.rotation = Quaternion.Euler(0, handle.GetRotation(), 0);
 
-        Vector3 playerDirection = enemyTransform.position - transform.position;
-        float rotationDifference = Vector3.Angle(transform.forward, playerDirection);
+        Vector3 enemyDirection = enemyTransform.position - transform.position;
+        float rotationDifference = Vector3.Angle(transform.forward, enemyDirection);
 
         if (Mathf.Abs(rotationDifference) <= fireSpreadAngle)
         {
-            if (Physics.Raycast(transform.position, playerDirection, out hit, maxRayDistance, hitLayers))
+            if (Physics.Raycast(transform.position, enemyDirection, out hit, maxRayDistance, hitLayers))
             {
                 lineRenderer.SetPositions(new Vector3[] { transform.position, hit.point });
 
                 Health enemy = hit.transform.GetComponent<Health>();
-                Debug.Log(hit.transform.name);
 
                 if (enemy)
                 {
@@ -95,7 +94,19 @@ public class Shooting : MonoBehaviour
             {
                 lineRenderer.SetPositions(new Vector3[] { transform.position,
                     hit.point });
-                currentClip = wallClip;
+
+                Health enemy = hit.transform.GetComponent<Health>();
+
+                if (enemy)
+                {
+                    enemy.TakeDamage(damage, gameObject);
+
+                    currentClip = hitClip;
+                }
+                else
+                {
+                    currentClip = wallClip;
+                }
             }
             else
             {

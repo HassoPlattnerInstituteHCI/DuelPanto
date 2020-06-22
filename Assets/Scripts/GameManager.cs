@@ -79,14 +79,14 @@ public class GameManager : MonoBehaviour
 
         // TODO: 2. Explain enemy and player with weapons by wiggling and playing shooting sound
 
-        // TODO: 3. Don't ask for a tour, just do it
-        await speechOut.Speak("Do you want to explore the room?");
-        string response = await speechIn.Listen(commands);
+        await speechOut.Speak("Feel for yourself. Say yes or done when you're ready.");
+        //string response = await speechIn.Listen(commands);
+        await speechIn.Listen(new Dictionary<string, KeyCode>() { { "yes", KeyCode.Y }, { "done", KeyCode.D } });
 
-        if (response == "yes")
-        {
-            await RoomExploration();
-        }
+        //if (response == "yes")
+        //{
+        //    await RoomExploration();
+        //}
     }
 
     async Task RoomExploration()
