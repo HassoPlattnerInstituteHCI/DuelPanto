@@ -1,18 +1,8 @@
 ﻿using System.Threading.Tasks;
 using SpeechIO;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
-
-/* TODO: Rather than calling it quake (which is a huge AAA title that we cannot 
- * approximate; also a trademark, I am suspecting), let's give this its own name: 
- * maybe a pun on dualPanto... dunno dualPanting (to pant = heavy breathing...)... 
- * not really... how about duelPanto (duel = a contest with deadly weapons arranged 
- * between two people in order to settle a point of honor)? Downside is that, when 
- * merely spoken, no one will even get the pun (I checked and they pronounce exactly the same). 
- * Maybe you have better ideas? Can anyone suggest a few names? 
- */
 
 public class GameManager : MonoBehaviour
 {
@@ -23,10 +13,9 @@ public class GameManager : MonoBehaviour
     public EnemyConfig[] enemyConfigs;
     public Transform playerSpawn;
     public Transform enemySpawn;
-    public Text playerScoreText;
-    public Text enemyScoreText;
     public int level = 0;
     public int trophyScore = 10000;
+    public UIManager uiManager;
 
     UpperHandle upperHandle;
     LowerHandle lowerHandle;
@@ -35,6 +24,7 @@ public class GameManager : MonoBehaviour
     int playerScore = 0;
     int enemyScore = 0;
     int gameScore = 0;
+    float totalTime = 0;
     float levelStartTime = 0;
     Dictionary<string, KeyCode> commands = new Dictionary<string, KeyCode>() {
         { "yes", KeyCode.Y },
@@ -59,7 +49,7 @@ public class GameManager : MonoBehaviour
         upperHandle = GetComponent<UpperHandle>();
         lowerHandle = GetComponent<LowerHandle>();
 
-        UpdateUI();
+        uiManager.UpdateUI(playerScore, enemyScore);
 
         Introduction();
     }
@@ -113,7 +103,7 @@ public class GameManager : MonoBehaviour
     }
 
     void RegisterColliders() {
-        PantoCollider[] colliders = GameObject.FindObjectsOfType<PantoCollider>();
+        PantoCollider[] colliders = FindObjectsOfType<PantoCollider>();
         foreach (PantoCollider collider in colliders)
         {
             Debug.Log(collider);
@@ -143,12 +133,6 @@ public class GameManager : MonoBehaviour
         levelStartTime = Time.time;
     }
 
-    void QuitGame()
-    {
-        Debug.Log("Quitting Application...");
-        Application.Quit();
-    }
-
     async void onRecognized(string message)
     {
         Debug.Log("SpeechIn recognized: " + message);
@@ -175,7 +159,7 @@ public class GameManager : MonoBehaviour
         {
             playerScore++;
         }
-        UpdateUI();
+        uiManager.UpdateUI(playerScore, enemyScore);
 
         string defeatedPerson = playerDefeated ? "You" : "Enemy";
         await speechOut.Speak($"{defeatedPerson} got defeated.");
@@ -189,39 +173,24 @@ public class GameManager : MonoBehaviour
         } else
         {
             // TODO: Evaluate the players performance with game score
-            //await speechOut.Speak("Continue?");
             await speechOut.Speak($"Current score is {gameScore}");
             await speechOut.Speak($"Continuing with level {level + 1}");
             await ResetGame();
-
-            //string response = await speechIn.Listen(commands);
-            //if (response == "yes")
-            //    await ResetGame();
-            //if (response == "no")
-            //    QuitGame();
         }
-    }
-
-    async Task TellCommands()
-    {
-        await speechOut.Speak("You can say yes or no.");
-    }
-
-    void UpdateUI()
-    {
-        playerScoreText.text = playerScore.ToString();
-        enemyScoreText.text = enemyScore.ToString();
     }
 
     async Task GameOver()
     {
         await speechOut.Speak("Congratulations.");
         await speechOut.Speak($"You achieved a score of {gameScore}");
-        // TODO: Estimate a good trophy score
-        if (gameScore >= trophyScore)
-        {
-            // TODO: Return trophy/proof of beating trophy score
-        }
+        await speechOut.Speak("Please enter your name to submit your highscore.");
+
+        await uiManager.GameOver(gameScore, (int)totalTime, trophyScore);
+
+        await speechOut.Speak("Thanks for playing DuelPanto. Say quit when you're done.");
+        await speechIn.Listen(new Dictionary<string, KeyCode>() { { "quit", KeyCode.Escape } });
+
+        Application.Quit();
     }
 
     int CalculateGameScore(GameObject player, GameObject enemy)
@@ -230,6 +199,7 @@ public class GameManager : MonoBehaviour
         Health enemyHealth = enemy.GetComponent<Health>();
 
         float levelCompleteTime = Time.time - levelStartTime;
+        totalTime += levelCompleteTime;
         int timeMultiplier = 1;
         if (levelCompleteTime < 30)
         {
@@ -241,7 +211,6 @@ public class GameManager : MonoBehaviour
         {
             timeMultiplier = 2;
         }
-
 
         int levelScore = playerHealth.healthPoints - enemyHealth.healthPoints;
         if (levelScore > 0)
