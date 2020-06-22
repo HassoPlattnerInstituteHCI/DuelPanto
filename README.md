@@ -1,4 +1,4 @@
-# Quake-DP
+# DuelPanto
 A DualPanto shooter game.
 
 # Installation 
