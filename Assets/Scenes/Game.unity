@@ -2798,7 +2798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnSpeed: 1
-  introduceLevel: 0
+  introduceLevel: 1
   player: {fileID: 881415689}
   enemy: {fileID: 1819973866}
   enemyConfigs:
