@@ -182,10 +182,17 @@ public class GameManager : MonoBehaviour
     async Task GameOver()
     {
         await speechOut.Speak("Congratulations.");
-        await speechOut.Speak($"You achieved a score of {gameScore}");
-        await speechOut.Speak("Please enter your name to submit your highscore.");
 
-        await uiManager.GameOver(gameScore, (int)totalTime, trophyScore);
+        if (!GetComponent<DualPantoSync>().debug)
+        {
+            await speechOut.Speak($"You achieved a score of {gameScore}.");
+            await speechOut.Speak("Please enter your name to submit your highscore.");
+
+            await uiManager.GameOver(gameScore, (int)totalTime, trophyScore);
+        } else
+        {
+            await speechOut.Speak($"You achieved a score of {gameScore} in debug mode.");
+        }
 
         await speechOut.Speak("Thanks for playing DuelPanto. Say quit when you're done.");
         await speechIn.Listen(new Dictionary<string, KeyCode>() { { "quit", KeyCode.Escape } });
