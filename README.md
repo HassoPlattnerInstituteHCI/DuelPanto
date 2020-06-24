@@ -1,6 +1,8 @@
 # DuelPanto
 A DualPanto shooter game.
 
+Press `ALT` key to visualize game scene.
+
 # Installation 
 
-run `git submodule update --init --recursive` after cloning to make sure the dualPantoFramework is downloaded aswell
+1. Run `git submodule update --init --recursive`.this will download a submodule `unity-dualpanto-framework`.
