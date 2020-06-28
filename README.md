@@ -8,10 +8,10 @@ Press `TAB` key to show leaderboard.
 
 Skip the introduction by disabling _Panto > Game Manager (Script) > Introduce Level_.
 
-# Installation 
+## Installation 
 
 1. Run `git submodule update --init --recursive`.this will download a submodule `unity-dualpanto-framework`.
 
-# Basic functionality
+## Basic functionality
 
 ![Order of events](img/DuelPanto.jpg)
