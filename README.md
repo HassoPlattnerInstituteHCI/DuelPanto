@@ -1,7 +1,12 @@
 # DuelPanto
-A DualPanto shooter game.
+A DualPanto shooter game. You against an enemy ai equipped with deadly lasers fight over three rounds.
+
+[Leaderboard](http://thijsroumen.eu/panto-highscores.html)
 
 Press `ALT` key to visualize game scene.
+Press `TAB` key to show leaderboard.
+
+Skip the introduction by disabling _Panto > Game Manager (Script) > Introduce Level_.
 
 # Installation 
 
