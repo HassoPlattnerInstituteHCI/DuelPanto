@@ -11,3 +11,7 @@ Skip the introduction by disabling _Panto > Game Manager (Script) > Introduce Le
 # Installation 
 
 1. Run `git submodule update --init --recursive`.this will download a submodule `unity-dualpanto-framework`.
+
+# Basic functionality
+
+![Order of events](img/DuelPanto.jpg)
