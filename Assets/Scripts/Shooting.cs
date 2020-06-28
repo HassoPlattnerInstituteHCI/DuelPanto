@@ -58,10 +58,14 @@ public class Shooting : MonoBehaviour
         FireCone();
     }
 
+    /// <summary>
+    /// Fire gun with aiming assistance.
+    /// </summary>
     void FireCone()
     {
         RaycastHit hit;
 
+        // Getting upper rotation only for player interesting
         if (isUpper)
             transform.rotation = Quaternion.Euler(0, handle.GetRotation(), 0);
 
@@ -118,6 +122,9 @@ public class Shooting : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Simple firing in forward direction. Doesn't require a target.
+    /// </summary>
     void Fire()
     {
         RaycastHit hit;

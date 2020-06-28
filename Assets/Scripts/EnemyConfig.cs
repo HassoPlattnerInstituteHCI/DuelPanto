@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Enemy configuration for different difficulities.
+/// </summary>
 [CreateAssetMenu(fileName = "Enemy", menuName = "ScriptableObjects/EnemyConfig", order = 1)]
 public class EnemyConfig : ScriptableObject
 {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class EnemyLogic : MonoBehaviour
 {
     public Transform target;
     public LayerMask layerMask;
@@ -53,6 +53,11 @@ public class Enemy : MonoBehaviour
      * If you get carried away, let the enemy hide behind the obstacles. 
      * This will make the game more interesting.
      */
+
+    /// <summary>
+    /// Looks for the player with a field of view.
+    /// After amount of time starts to search the player.
+    /// </summary>
     void SeekMode()
     {
         Vector3 playerDirection = target.position - transform.position;
@@ -89,11 +94,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Always knows where the player is.
+    /// </summary>
     void AimbotMode()
     {
         lastSeenPosition = target.position;
     }
 
+    /// <summary>
+    /// If enemy gets shot and returns fire on attack then the enemy knows the
+    /// last seen position of the player.
+    /// </summary>
+    /// <param name="from"></param>
     public void GotShot(GameObject from)
     {
         if (!config.returnsFireOnAttack) return;

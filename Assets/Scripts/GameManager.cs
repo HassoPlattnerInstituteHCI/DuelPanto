@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
         //}
     }
 
+    [System.Obsolete]
     async Task RoomExploration()
     {
         while (true)
@@ -112,6 +113,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts a new round.
+    /// </summary>
+    /// <returns></returns>
     async Task ResetGame()
     {
         await speechOut.Speak("Spawning player");
@@ -124,7 +129,7 @@ public class GameManager : MonoBehaviour
         await lowerHandle.SwitchTo(enemy, 0.3f);
         if (level >= enemyConfigs.Length)
             Debug.LogError($"Level {level} is over number of enemies {enemyConfigs.Length}");
-        enemy.GetComponent<Enemy>().config = enemyConfigs[level];
+        enemy.GetComponent<EnemyLogic>().config = enemyConfigs[level];
 
         upperHandle.Free();
 
@@ -144,6 +149,11 @@ public class GameManager : MonoBehaviour
         speechIn.StopListening(); // [macOS] do not delete this line!
     }
 
+    /// <summary>
+    /// Ends the round by disabling player and enemy, updating UI, calculating
+    /// game score and eventually ending the game.
+    /// </summary>
+    /// <param name="defeated"></param>
     public async void OnDefeat(GameObject defeated)
     {
         player.SetActive(false);
@@ -179,6 +189,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Ends the game.
+    /// </summary>
+    /// <returns></returns>
     async Task GameOver()
     {
         await speechOut.Speak("Congratulations.");
@@ -200,6 +214,13 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    /// <summary>
+    /// Calculates the game score by healt, level complete time and enemy
+    /// difficulty.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="enemy"></param>
+    /// <returns></returns>
     int CalculateGameScore(GameObject player, GameObject enemy)
     {
         Health playerHealth = player.GetComponent<Health>();

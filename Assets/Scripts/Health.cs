@@ -10,7 +10,6 @@ public class DamageEvent : UnityEvent<GameObject> { }
 
 public class Health : MonoBehaviour
 {
-    // TODO: 5. Make the levels way longer. Just give players 4x more health.
     [HideInInspector]
     public int healthPoints = 100;
     public Slider healthSlider;
@@ -29,6 +28,11 @@ public class Health : MonoBehaviour
         UpdateUI();
     }
 
+    /// <summary>
+    /// Takes damage and notifies listeners about defeat and damage.
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <param name="from"></param>
     public void TakeDamage(int amount, GameObject from)
     {
         healthPoints -= amount;
@@ -44,6 +48,7 @@ public class Health : MonoBehaviour
         }
     }
 
+    // Currently not in use but helpful for e.g. medkits.
     public void Heal(int amount)
     {
         healthPoints = Mathf.Min(healthPoints + amount, maxHealth);
@@ -52,6 +57,7 @@ public class Health : MonoBehaviour
     void UpdateUI()
     {
         healthSlider.value = healthPoints;
-        sliderImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, healthPoints / (float)maxHealth);
+        sliderImage.color = Color.Lerp(zeroHealthColor,
+            fullHealthColor, healthPoints / (float)maxHealth);
     }
 }
