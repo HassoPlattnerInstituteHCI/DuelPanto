@@ -121,12 +121,12 @@ public class GameManager : MonoBehaviour
     {
         await speechOut.Speak("Spawning player");
         player.transform.position = playerSpawn.position;
-        await upperHandle.SwitchTo(player, 0.3f);
+        await upperHandle.SwitchTo(player, 0.2f);
 
         await speechOut.Speak("Spawning enemy");
         enemy.transform.position = enemySpawn.position;
         enemy.transform.rotation = enemySpawn.rotation;
-        await lowerHandle.SwitchTo(enemy, 0.3f);
+        await lowerHandle.SwitchTo(enemy, 0.2f);
         if (level >= enemyConfigs.Length)
             Debug.LogError($"Level {level} is over number of enemies {enemyConfigs.Length}");
         enemy.GetComponent<EnemyLogic>().config = enemyConfigs[level];

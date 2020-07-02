@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -482,7 +482,7 @@ PrefabInstance:
     - target: {fileID: 826605487606422808, guid: f08d327e9fb42f94d97ba9d1d226d418,
         type: 3}
       propertyPath: portName
-      value: /dev/cu.SLAB_USBtoUART
+      value: //.//COM3
       objectReference: {fileID: 0}
     - target: {fileID: 826605487606422808, guid: f08d327e9fb42f94d97ba9d1d226d418,
         type: 3}
@@ -517,6 +517,16 @@ PrefabInstance:
     - target: {fileID: 3282298869498686265, guid: f08d327e9fb42f94d97ba9d1d226d418,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 826605487606422814, guid: f08d327e9fb42f94d97ba9d1d226d418,
+        type: 3}
+      propertyPath: tweenValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 826605487606422815, guid: f08d327e9fb42f94d97ba9d1d226d418,
+        type: 3}
+      propertyPath: tweenValue
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2505,7 +2515,7 @@ Camera:
   far clip plane: 1000
   field of view: 20
   orthographic: 1
-  orthographic size: 14.706573
+  orthographic size: 28.57143
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
