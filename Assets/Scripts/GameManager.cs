@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     async void Introduction()
     {
-        await speechOut.Speak("Welcome to Quake Panto Edition");
+        await speechOut.Speak("Welcome to the Surgeon Simulator Panto Edition");
         // TODO: 1. Introduce obstacles in level 2 (aka 1)
         await Task.Delay(1000);
         RegisterColliders();
@@ -73,15 +73,15 @@ public class GameManager : MonoBehaviour
 
     async Task IntroduceLevel()
     {
-        await speechOut.Speak("There are two obstacles.");
+        await speechOut.Speak("There are four organs.");
         Level level = GetComponent<Level>();
         await level.PlayIntroduction();
 
         // TODO: 2. Explain enemy and player with weapons by wiggling and playing shooting sound
 
-        await speechOut.Speak("Feel for yourself. Say yes or done when you're ready.");
+        // await speechOut.Speak("Feel for yourself. Say yes or done when you're ready.");
         //string response = await speechIn.Listen(commands);
-        await speechIn.Listen(new Dictionary<string, KeyCode>() { { "yes", KeyCode.Y }, { "done", KeyCode.D } });
+        // await speechIn.Listen(new Dictionary<string, KeyCode>() { { "yes", KeyCode.Y }, { "done", KeyCode.D } });
 
         //if (response == "yes")
         //{
@@ -118,10 +118,12 @@ public class GameManager : MonoBehaviour
         player.transform.position = playerSpawn.position;
         await upperHandle.SwitchTo(player, 0.3f);
 
-        await speechOut.Speak("Spawning enemy");
+        await speechOut.Speak("Finding organ heart");
         enemy.transform.position = enemySpawn.position;
         enemy.transform.rotation = enemySpawn.rotation;
-        await lowerHandle.SwitchTo(enemy, 0.3f);
+        GameObject heart = GameObject.FindGameObjectWithTag("Heart");
+        Debug.Log(heart);
+        await lowerHandle.SwitchTo(heart, 0.3f);
         if (level >= enemyConfigs.Length)
             Debug.LogError($"Level {level} is over number of enemies {enemyConfigs.Length}");
         enemy.GetComponent<Enemy>().config = enemyConfigs[level];

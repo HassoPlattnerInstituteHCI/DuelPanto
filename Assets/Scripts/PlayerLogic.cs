@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpeechIO;
 
 public class PlayerLogic : MonoBehaviour
 {
@@ -16,20 +17,27 @@ public class PlayerLogic : MonoBehaviour
     float nextHeartbeat;
     Health health;
 
+    SpeechOut speechOut;
+
+    private void Awake()
+    {
+        speechOut = new SpeechOut();
+    }
+
     void Start()
     {
         upperHandle = GameObject.Find("Panto").GetComponent<UpperHandle>();
-        health = GetComponent<Health>();
+        /* health = GetComponent<Health>();
         audioSource = GetComponent<AudioSource>();
 
-        bpmCoefficient = (endBPM - startBPM) / Mathf.Pow(health.maxHealth, 2);
+        bpmCoefficient = (endBPM - startBPM) / Mathf.Pow(health.maxHealth, 2); */
     }
 
     void Update()
     {
         transform.position = upperHandle.HandlePosition(transform.position);
 
-        if (health.healthPoints > 0 && health.healthPoints <= 2 * health.maxHealth / 3)
+        /* if (health.healthPoints > 0 && health.healthPoints <= 2 * health.maxHealth / 3)
         {
             if (nextHeartbeat > bps)
             {
@@ -42,6 +50,20 @@ public class PlayerLogic : MonoBehaviour
             {
                 nextHeartbeat += Time.deltaTime;
             }
+        } */
+    }
+
+    private async void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "Heart")
+        {
+            await speechOut.Speak("Congratulations, you reached the heart.");
         }
+        else
+        {
+            await speechOut.Speak("Sorry, that is not the organ you are looking for");
+        }
+
+        Debug.Log(collision.gameObject.tag);
     }
 }

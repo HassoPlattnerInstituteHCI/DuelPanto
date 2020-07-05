@@ -16,23 +16,23 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.stoppingDistance = config.CSGoPlayer ? aimbotDistance : seekingDistance;
+        /* agent = GetComponent<NavMeshAgent>();
+        agent.stoppingDistance = config.CSGoPlayer ? aimbotDistance : seekingDistance; */
     }
 
     void OnEnable()
     {
-        if (config.attackPlayerAtStart)
+        /* if (config.attackPlayerAtStart)
         {
             lastSeenPosition = target.position;
             foundPlayer = true;
         }
-        GetComponent<Health>().maxHealth = config.health;
+        GetComponent<Health>().maxHealth = config.health; */
     }
 
     void Update()
     {
-        if (config.CSGoPlayer)
+        /* if (config.CSGoPlayer)
         {
             AimbotMode();
         }
@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
 
         agent.SetDestination(lastSeenPosition);
         Quaternion lookRotation = Quaternion.LookRotation(lastSeenPosition - transform.position, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, config.turnSpeed);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, config.turnSpeed); */
     }
 
     /* TODO: 9. If you get bored: watching Thijs and Jotaro, the game seems to "stall" 
@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
      */
     void SeekMode()
     {
-        Vector3 playerDirection = target.position - transform.position;
+        /* Vector3 playerDirection = target.position - transform.position;
         float rotationDifference = Vector3.Angle(transform.forward, playerDirection);
 
         if (Mathf.Abs(rotationDifference) <= config.fieldOfView)
@@ -86,7 +86,7 @@ public class Enemy : MonoBehaviour
         else if (!foundPlayer)
         {
             timeToFind += Time.deltaTime;
-        }
+        } */
     }
 
     void AimbotMode()
