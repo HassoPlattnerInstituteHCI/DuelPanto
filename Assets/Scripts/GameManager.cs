@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
+using DualPantoFramework;
 public class GameManager : MonoBehaviour
 {
     public float spawnSpeed = 1f;

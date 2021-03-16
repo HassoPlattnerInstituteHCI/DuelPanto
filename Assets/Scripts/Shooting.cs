@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using DualPantoFramework;
 public class Shooting : MonoBehaviour
 {
     public float maxRayDistance = 20f;
